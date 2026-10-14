@@ -1,0 +1,143 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: alex
+      changes:
+        - createTable:
+            tableName: task
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: alex
+      changes:
+        - addColumn:
+            tableName: task
+            columns:
+              - column:
+                  name: status
+                  type: VARCHAR(15)
+                  defaultValue: NOT_STARTED
+                  value: NOT_STARTED
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 3
+      author: alex
+      changes:
+        - addColumn:
+            tableName: task
+            columns:
+              - column:
+                  name: priority
+                  type: VARCHAR(20)
+                  defaultValue: NOT_ASSIGNED
+                  value: NOT_ASSIGNED
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: alex
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(35)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: alex
+      changes:
+        - addColumn:
+            tableName: task
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+
+  - changeSet:
+      id: 6
+      author: alex
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO users (username, email)
+              VALUES ('migration_user', 'migration@task-manager.local');
+
+              UPDATE task
+              SET user_id = (
+                  SELECT id
+                  FROM users
+                  WHERE username = 'migration_user'
+              )
+              WHERE user_id IS NULL;
+
+  - changeSet:
+      id: 7
+      author: alex
+      changes:
+        - addNotNullConstraint:
+            tableName: task
+            columnName: user_id
+            columnDataType: BIGINT
+
+        - addForeignKeyConstraint:
+            baseTableName: task
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_task_user
+  - changeSet:
+      id: 8
+      author: alex
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role
+                  type: varchar(15)
+                  defaultValue: GUEST
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(100)
+
+
+
+
