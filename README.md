@@ -57,7 +57,7 @@ cd TaskManagerSpringBoot
 
 ```dotenv
 POSTGRES_USER=alex
-POSTGRES_PASSWORD=change_me_to_a_secure_password
+POSTGRES_PASSWORD=1234
 POSTGRES_DB=task_manager
 ```
 
@@ -184,7 +184,7 @@ Create a `.env` file in the project root:
 
 ```dotenv
 POSTGRES_USER=alex
-POSTGRES_PASSWORD=change_me_to_a_secure_password
+POSTGRES_PASSWORD=1234
 POSTGRES_DB=task_manager
 ```
 
